@@ -11,8 +11,8 @@ router.get('/user', authenticated, async(req, res) => {
 })
 
 router.post('/register', async(req, res) => {
-    const { email, password, name, type } = req.body;
-    if(!req.body.email || !req.body.password || !req.body.name || !req.body.type ) {
+    const { email, password, name, role } = req.body;
+    if(!req.body.email || !req.body.password || !req.body.name || !req.body.role ) {
         return res.status(400).json({
             ok:false,
             response:'please fill out all fields'
@@ -36,7 +36,7 @@ router.post('/register', async(req, res) => {
                 name: name,
                 email:email,
                 password: hashed,
-                type:type
+                role:role
             }
         })
         if(!user) {
@@ -55,8 +55,8 @@ router.post('/register', async(req, res) => {
     }
 })
 router.post('/login', async(req, res) => {
-    const { email, password, name, type } = req.body;
-    if(!email|| !password || !name || !type ) {
+    const { email, password, name, role } = req.body;
+    if(!email|| !password || !name || !role ) {
         return res.status(400).json({
             ok:false,
             response:'please fill out all fields'
@@ -81,6 +81,15 @@ router.post('/login', async(req, res) => {
                 response:'Password Incorrect'
             })
         };
+        const newProduct = await prisma.product.create({
+            data: {
+                name:'Ramez Product',
+                description:'First product test :"D ',
+                stock: 15,
+                price: 250,
+                userId:'cllh7z15g0000usywzezj87hh'
+            }
+        })
         const token = await jwt.sign({id: exist.id}, 'test');
         return res.cookie('auth', token).status(200).json({
             ok:true
