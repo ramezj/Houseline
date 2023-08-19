@@ -20,13 +20,21 @@ router.get('/create', async(req, res) => {
         return res.status(newProduct);
     }
 })
-router.get('/:id', async(req, res) => {
-    const products = await prisma.product.findMany({
-        where: {
-            userId:req.params.id
+
+router.get('/user', async(req, res) => {
+    const userId = "cllhhphjv0000uses1vhuvue4";
+    const test = await prisma.user.findFirst({
+        where:{
+            id: userId
+        },
+        include: {
+            products:true
         }
     });
-    console.log(products);
+    return res.status(200).json({
+        ok:true,
+        user:test
+    })
 })
 
 export { router };
