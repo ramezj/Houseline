@@ -15,7 +15,17 @@ model User {
   name  String
   email String  @unique
   password String
+  address String?
+  phoneNumber Int?
   role Int @default(1)
+  stores Store[]
+}
+model Store {
+  id String @id @default(cuid())
+  name String
+  imageLink String
+  userId String
+  user User @relation(fields: [userId], references: [id])
   products Product[]
 }
 model Product {
@@ -24,6 +34,9 @@ model Product {
   description String
   stock Int
   price Int
-  userId String
-  user User @relation(fields: [userId], references: [id])
+  material String
+  color String
+  imageLink String
+  storeId String
+  store Store @relation(fields: [storeId], references: [id])
 }

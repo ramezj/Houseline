@@ -16,19 +16,7 @@ const authenticated = async(req, res, next) => {
             })
         };
         if(verification) {
-            try {
-                const decoded = await jwt.decode(req.cookies.auth, 'test');
-                if(!decoded) {
-                    return res.status(400).json({
-                        ok:false,
-                        response:'Something went wrong'
-                    })
-                }
-                console.log(decoded);
-                next();
-            } catch (error) {
-                console.error();
-            }
+            next();
         }
     }
 }
